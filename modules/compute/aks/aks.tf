@@ -273,6 +273,15 @@ resource "azurerm_kubernetes_cluster" "aks" {
     }
   }
 
+  dynamic "http_proxy_config" {
+    for_each = try(var.settings.http_proxy_config[*], {})
+    content {
+      http_proxy     = try(http_proxy_config.value.http_proxy, null)
+      https_proxy    = try(http_proxy_config.value.https_proxy, null)
+      no_proxy       = try(http_proxy_config.value.no_proxy, null)
+      trusted_ca     = try(http_proxy_config.value.trusted_ca, null )        
+    }
+  }
   dynamic "kubelet_identity" {
     for_each = try(var.settings.kubelet_identity, null) == null ? [] : [1]
     content {

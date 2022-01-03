@@ -63,7 +63,7 @@ module "azurerm_virtual_hub_route_table" {
   settings      = each.value
 
   remote_objects = {
-    virtual_hub_connections = local.combined_objects_virtual_hub_connections
+   // virtual_hub_connections = local.combined_objects_virtual_hub_connections
     azurerm_firewalls       = local.combined_objects_azurerm_firewalls
   }
 

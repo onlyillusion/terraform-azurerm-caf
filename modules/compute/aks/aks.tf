@@ -279,7 +279,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
       http_proxy     = try(http_proxy_config.value.http_proxy, null)
       https_proxy    = try(http_proxy_config.value.https_proxy, null)
       no_proxy       = try(http_proxy_config.value.no_proxy, null)
-      trusted_ca     = try(http_proxy_config.value.trusted_ca, null )        
+      trusted_ca     = try(base64encode(each.value.custom_data)), null
+    
+   
+
     }
   }
   dynamic "kubelet_identity" {

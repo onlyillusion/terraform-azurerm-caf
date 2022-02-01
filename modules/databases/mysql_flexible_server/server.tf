@@ -1,6 +1,6 @@
 
 resource "azurerm_mysql_flexible_server" "mysql" {
-  depends_on = [azurerm_key_vault_secret.mysql_administrator_password]
+  
   
   name                = var.settings.name
   resource_group_name = var.resource_group.name
@@ -75,6 +75,9 @@ resource "random_password" "mysql_administrator_password" {
   number           = true
   special          = true
   override_special = "$#%"
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 

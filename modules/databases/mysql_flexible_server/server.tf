@@ -11,7 +11,7 @@ resource "azurecaf_name" "mysql_flexible_server" {
 */
   
 resource "azurerm_mysql_flexible_server" "mysql" {
-  name                = azurecaf_name.mysql_flexible_server.result
+  name                = var.settings.name
   resource_group_name = var.resource_group.name
   location            = var.resource_group.location
   version             = try(var.settings.version, null)
@@ -59,11 +59,11 @@ resource "azurerm_mysql_flexible_server" "mysql" {
 
   tags = merge(local.tags, lookup(var.settings, "tags", {}))
 }
-
+/*
 resource "azurerm_key_vault_secret" "mysql_administrator_username" {
   count = lookup(var.settings, "keyvault", null) == null ? 0 : 1
 
-  name         = format("%s-username", azurecaf_name.mysql_flexible_server.result)
+  name         = format("%s-username", azurerm_mysql_flexible_server.mysql.result)
   value        = try(var.settings.administrator_username, "psqladmin")
   key_vault_id = var.remote_objects.keyvault_id
 
@@ -105,3 +105,4 @@ resource "azurerm_key_vault_secret" "mysql_fqdn" {
   value        = azurerm_mysql_flexible_server.mysql.fqdn
   key_vault_id = var.remote_objects.keyvault_id
 }
+*/

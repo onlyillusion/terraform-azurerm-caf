@@ -1,3 +1,4 @@
+/*
 resource "azurecaf_name" "mysql_flexible_server_firewall_rule" {
   for_each = try(var.settings.mysql_firewall_rules, {})
 
@@ -28,3 +29,4 @@ resource "azurerm_mysql_flexible_server_firewall_rule" "mysql" {
     }
   }
 }
+*/

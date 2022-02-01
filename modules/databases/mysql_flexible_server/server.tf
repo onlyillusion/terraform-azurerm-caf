@@ -1,3 +1,4 @@
+/*
 resource "azurecaf_name" "mysql_flexible_server" {
   name          = var.settings.name
   resource_type = "azurerm_mysql_flexible_server"
@@ -7,7 +8,8 @@ resource "azurecaf_name" "mysql_flexible_server" {
   passthrough   = var.global_settings.passthrough
   use_slug      = var.global_settings.use_slug
 }
-
+*/
+  
 resource "azurerm_mysql_flexible_server" "mysql" {
   name                = azurecaf_name.mysql_flexible_server.result
   resource_group_name = var.resource_group.name

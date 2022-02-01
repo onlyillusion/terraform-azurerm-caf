@@ -53,7 +53,7 @@ resource "azurerm_mysql_flexible_server" "mysql" {
 resource "azurerm_key_vault_secret" "mysql_administrator_username" {
   count = lookup(var.settings, "keyvault", null) == null ? 0 : 1
 
-  name         = format("%s-username", azurerm_mysql_flexible_server.mysql.result)
+  name         = format("%s-username", azurerm_mysql_flexible_server.mysql.id)
   value        = try(var.settings.administrator_username, "psqladmin")
   key_vault_id = var.remote_objects.keyvault_id
 
@@ -77,7 +77,7 @@ resource "random_password" "mysql_administrator_password" {
 resource "azurerm_key_vault_secret" "mysql_administrator_password" {
   count = lookup(var.settings, "keyvault", null) == null ? 0 : 1
 
-  name         = format("%s-password", azurerm_mysql_flexible_server.mysql.result)
+  name         = format("%s-password", azurerm_mysql_flexible_server.mysql.id)
   value        = try(var.settings.administrator_password, random_password.mysql_administrator_password.0.result)
   key_vault_id = var.remote_objects.keyvault_id
 

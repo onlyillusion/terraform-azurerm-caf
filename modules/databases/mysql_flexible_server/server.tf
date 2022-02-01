@@ -17,8 +17,8 @@ resource "azurerm_mysql_flexible_server" "mysql" {
   source_server_id                  = try(var.settings.create_mode, "PointInTimeRestore") == "PointInTimeRestore" ? try(var.settings.source_server_id, null) : null
 
   administrator_login    = try(var.settings.create_mode, "Default") == "Default" ? try(var.settings.administrator_username, "pgadmin") : null
+  
   administrator_password = try(var.settings.create_mode, "Default") == "Default" ? try(var.settings.administrator_password, azurerm_key_vault_secret.mysql_administrator_password.0.value) : null
-
   backup_retention_days = try(var.settings.backup_retention_days, null)
 
   dynamic "maintenance_window" {
@@ -73,7 +73,7 @@ resource "random_password" "mysql_administrator_password" {
   special          = true
   override_special = "$#%"
 }
-
+/*
 resource "azurerm_key_vault_secret" "mysql_administrator_password" {
   count = lookup(var.settings, "keyvault", null) == null ? 0 : 1
 
@@ -95,4 +95,4 @@ resource "azurerm_key_vault_secret" "mysql_fqdn" {
   value        = azurerm_mysql_flexible_server.mysql.fqdn
   key_vault_id = var.remote_objects.keyvault_id
 }
-
+*/

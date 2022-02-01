@@ -3,26 +3,26 @@ output "location" {
   value       = var.resource_group.location
 }
 
-output "postgresql_flexible_server_administrator_username" {
-  description = "Administrator username of PostgreSQL flexible server"
-  value       = azurerm_postgresql_flexible_server.postgresql.administrator_login
+output "mysql_flexible_server_administrator_username" {
+  description = "Administrator username of MYSQL flexible server"
+  value       = azurerm_mysql_flexible_server.mysql.administrator_login
   sensitive   = true
 }
 
-output "postgresql_flexible_server_administrator_password" {
-  description = "Administrator password of PostgreSQL flexible server"
-  value       = azurerm_postgresql_flexible_server.postgresql.administrator_password
+output "mysql_flexible_server_administrator_password" {
+  description = "Administrator password of MYSQL flexible server"
+  value       = azurerm_mysql_flexible_server.mysql.administrator_password
   sensitive   = true
 }
 
-output "postgresql_flexible_server_id" {
-  description = "ID of the PostgreSQL flexible server"
-  value       = azurerm_postgresql_flexible_server.postgresql.id
+output "mysql_flexible_server_id" {
+  description = "ID of the MYSQL flexible server"
+  value       = azurerm_mysql_flexible_server.mysql.id
 }
 
-output "postgresql_flexible_server_fqdn" {
-  description = "FQDN of the PostgreSQL flexible server"
-  value       = azurerm_postgresql_flexible_server.postgresql.fqdn
+output "mysql_flexible_server_fqdn" {
+  description = "FQDN of the MYSQL flexible server"
+  value       = azurerm_mysql_flexible_server.mysql.fqdn
 }
 
 output "mysql_flexible_server_name" {

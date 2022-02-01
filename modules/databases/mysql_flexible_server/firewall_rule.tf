@@ -9,7 +9,7 @@ resource "azurecaf_name" "mysql_flexible_server_firewall_rule" {
   passthrough   = var.global_settings.passthrough
 }
 
-resource "azurerm_mysql_flexible_server_firewall_rule" "postgresql" {
+resource "azurerm_mysql_flexible_server_firewall_rule" "mysql" {
   for_each = try(var.settings.mysql_firewall_rules, {})
 
   name             = azurecaf_name.mysql_flexible_server_firewall_rule[each.key].result

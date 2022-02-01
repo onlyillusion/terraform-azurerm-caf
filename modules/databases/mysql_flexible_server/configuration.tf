@@ -4,7 +4,7 @@ resource "time_sleep" "server_configuration" {
   create_duration = "120s"
 }
 
-resource "azurerm_postgresql_mysql_server_configuration" "mysql" {
+resource "azurerm_mysql_server_configuration" "mysql" {
   depends_on = [time_sleep.server_configuration]
   for_each   = try(var.settings.mysql_configurations, {})
 

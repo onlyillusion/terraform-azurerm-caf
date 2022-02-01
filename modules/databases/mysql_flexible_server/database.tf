@@ -20,7 +20,6 @@ resource "azurerm_mysql_flexible_server_database" "mysql" {
   charset   = try(each.value.charset, "utf8")
 }
 
-# Store the azurerm_postgresql_flexible_server_database_name into keyvault if the attribute keyvault{} is defined.
 resource "azurerm_key_vault_secret" "mysql_database_name" {
   for_each = { for key, value in var.settings.mysql_databases : key => value if can(var.settings.keyvault) }
 

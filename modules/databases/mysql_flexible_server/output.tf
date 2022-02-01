@@ -3,11 +3,11 @@ output "location" {
   value       = var.resource_group.location
 }
 
-#output "mysql_flexible_server_administrator_username" {
-#  description = "Administrator username of MYSQL flexible server"
-#  value       = azurerm_mysql_flexible_server.mysql.administrator_login
-#  sensitive   = true
-#}
+output "mysql_flexible_server_administrator_username" {
+  description = "Administrator username of MYSQL flexible server"
+  value       = azurerm_mysql_flexible_server.mysql.administrator_login
+  sensitive   = true
+}
 
 output "mysql_flexible_server_administrator_password" {
   description = "Administrator password of MYSQL flexible server"

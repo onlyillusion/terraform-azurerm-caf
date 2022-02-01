@@ -73,7 +73,7 @@ resource "random_password" "mysql_administrator_password" {
   special          = true
   override_special = "$#%"
 }
-/*
+
 resource "azurerm_key_vault_secret" "mysql_administrator_password" {
   count = lookup(var.settings, "keyvault", null) == null ? 0 : 1
 
@@ -87,7 +87,7 @@ resource "azurerm_key_vault_secret" "mysql_administrator_password" {
     ]
   }
 }
-
+*/
 resource "azurerm_key_vault_secret" "mysql_fqdn" {
   count = lookup(var.settings, "keyvault", null) == null ? 0 : 1
 

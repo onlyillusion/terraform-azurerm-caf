@@ -1,3 +1,4 @@
+/*
 module "diagnostics" {
   source   = "../../diagnostics"
   for_each = try(var.settings.diagnostic_profiles, {})
@@ -7,3 +8,4 @@ module "diagnostics" {
   diagnostics       = var.remote_objects.diagnostics
   profiles          = var.settings.diagnostic_profiles
 }
+*/

@@ -1,3 +1,4 @@
+/*
 resource "azurecaf_name" "mysql_flexible_server_database" {
   for_each = var.settings.mysql_databases
 
@@ -27,3 +28,4 @@ resource "azurerm_key_vault_secret" "mysql_database_name" {
   value        = each.value.name
   key_vault_id = var.remote_objects.keyvault_id
 }
+*/

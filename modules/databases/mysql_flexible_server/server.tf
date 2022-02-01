@@ -50,19 +50,19 @@ resource "azurerm_mysql_flexible_server" "mysql" {
 }
 
 
-resource "azurerm_key_vault_secret" "mysql_administrator_username" {
-  count = lookup(var.settings, "keyvault", null) == null ? 0 : 1
+#resource "azurerm_key_vault_secret" "mysql_administrator_username" {
+#  count = lookup(var.settings, "keyvault", null) == null ? 0 : 1
 
-  name         = format("%s-username", azurerm_mysql_flexible_server.mysql.result)
-  value        = try(var.settings.administrator_username, "pgadmin")
-  key_vault_id = var.remote_objects.keyvault_id
+#  name         = format("%s-username", azurerm_mysql_flexible_server.mysql.result)
+#  value        = try(var.settings.administrator_username, "pgadmin")
+#  key_vault_id = var.remote_objects.keyvault_id
 
-  lifecycle {
-    ignore_changes = [
-      value
-    ]
-  }
-}
+#  lifecycle {
+#    ignore_changes = [
+#      value
+#    ]
+#  }
+#}
 
 
 resource "random_password" "mysql_administrator_password" {
@@ -75,7 +75,7 @@ resource "random_password" "mysql_administrator_password" {
   override_special = "$#%"
 }
 
-
+/*
 resource "azurerm_key_vault_secret" "mysql_administrator_password" {
   count = lookup(var.settings, "keyvault", null) == null ? 0 : 1
 
@@ -98,3 +98,4 @@ resource "azurerm_key_vault_secret" "mysql_fqdn" {
   value        = azurerm_mysql_flexible_server.mysql.fqdn
   key_vault_id = var.remote_objects.keyvault_id
 }
+*/

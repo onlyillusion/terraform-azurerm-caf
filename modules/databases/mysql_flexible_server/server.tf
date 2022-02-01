@@ -17,7 +17,7 @@ resource "azurerm_mysql_flexible_server" "mysql" {
   version             = try(var.settings.version, null)
   sku_name            = try(var.settings.sku_name, null)
   zone                = try(var.settings.zone, null)
-  storage_mb          = try(var.settings.storage_mb, null)
+  
 
   delegated_subnet_id = var.remote_objects.subnet_id
   private_dns_zone_id = var.remote_objects.private_dns_zone_id

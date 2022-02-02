@@ -1,17 +1,15 @@
-resource "azurecaf_name" "mysql" {
+resource "azurecaf_name" "mysql_flexible_server" {
   name          = var.settings.name
   resource_type = "azurerm_mysql_flexible_server"
   prefixes      = var.global_settings.prefixes
   random_length = var.global_settings.random_length
   clean_input   = true
   passthrough   = var.global_settings.passthrough
+  use_slug      = var.global_settings.use_slug
 }
 
-
-resource "azurerm_mysql_flexible_server" "mysql" {
-  
-  
-  name                = azurecaf_name.postgresql.result
+resource "azurerm_mysql_flexible_server" "postgresql" {
+  name                = azurecaf_name.mysql_flexible_server.result
   resource_group_name = var.resource_group.name
   location            = var.resource_group.location
   version             = try(var.settings.version, null)
@@ -60,11 +58,11 @@ resource "azurerm_mysql_flexible_server" "mysql" {
   tags = merge(local.tags, lookup(var.settings, "tags", {}))
 }
 
-
+# Store the postgresql_flexible_server administrator_username into keyvault if the attribute keyvault{} is defined.
 resource "azurerm_key_vault_secret" "mysql_administrator_username" {
   count = lookup(var.settings, "keyvault", null) == null ? 0 : 1
 
-  name         = format("%s-username", azurerm_mysql_flexible_server.mysql.name)
+  name         = format("%s-username", azurecaf_name.mysql_flexible_server.result)
   value        = try(var.settings.administrator_username, "psqladmin")
   key_vault_id = var.remote_objects.keyvault_id
 
@@ -75,7 +73,7 @@ resource "azurerm_key_vault_secret" "mysql_administrator_username" {
   }
 }
 
-
+# Generate random postgresql_flexible_administrator_password if attribute administrator_password not provided.
 resource "random_password" "mysql_administrator_password" {
   count = lookup(var.settings, "administrator_password", null) == null ? 1 : 0
 
@@ -84,16 +82,13 @@ resource "random_password" "mysql_administrator_password" {
   number           = true
   special          = true
   override_special = "$#%"
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
-
+# Store the postgresql_flexible_administrator_password into keyvault if the attribute keyvault{} is defined.
 resource "azurerm_key_vault_secret" "mysql_administrator_password" {
   count = lookup(var.settings, "keyvault", null) == null ? 0 : 1
 
-  name         = format("%s-password", azurerm_mysql_flexible_server.mysql.name)
+  name         = format("%s-password", azurecaf_name.postgresql_flexible_server.result)
   value        = try(var.settings.administrator_password, random_password.mysql_administrator_password.0.result)
   key_vault_id = var.remote_objects.keyvault_id
 
@@ -104,12 +99,11 @@ resource "azurerm_key_vault_secret" "mysql_administrator_password" {
   }
 }
 
-
+# Store the postgresql_flexible_fqdn into keyvault if the attribute keyvault{} is defined.
 resource "azurerm_key_vault_secret" "mysql_fqdn" {
   count = lookup(var.settings, "keyvault", null) == null ? 0 : 1
 
-  name         = format("%s-fqdn", azurerm_mysql_flexible_server.mysql.name)
+  name         = format("%s-fqdn", azurecaf_name.mysql_flexible_server.result)
   value        = azurerm_mysql_flexible_server.mysql.fqdn
   key_vault_id = var.remote_objects.keyvault_id
 }
-

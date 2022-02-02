@@ -5,7 +5,7 @@ resource "azurerm_mysql_flexible_database" "mysql" {
   depends_on = [azurerm_mysql_flexible_server.mysql]
   for_each   = try(var.settings.mysql_databases, {})
 
-  name      = azurerm_mysql_flexible_database.mysql.[each.key].name
+  name        = each.value.
   server_name = azurerm_mysql_flexible_server.mysql.name
   collation = try(each.value.collation, "en_US.utf8")
   charset   = try(each.value.charset, "utf8")

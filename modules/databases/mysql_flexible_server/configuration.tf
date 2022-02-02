@@ -1,4 +1,4 @@
-/*
+
 resource "time_sleep" "server_configuration" {
   depends_on = [azurerm_mysql_flexible_server.mysql]
 
@@ -13,4 +13,4 @@ resource "azurerm_mysql_server_configuration" "mysql" {
   server_id = azurerm_mysql_flexible_server.mysql.id
   value     = each.value.value
 }
-*/
+

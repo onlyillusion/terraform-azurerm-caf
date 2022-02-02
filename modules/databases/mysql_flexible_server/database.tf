@@ -1,4 +1,4 @@
-/*
+
 resource "azurecaf_name" "mysql_flexible_server_database" {
   for_each = var.settings.mysql_databases
 
@@ -24,8 +24,8 @@ resource "azurerm_mysql_flexible_server_database" "mysql" {
 resource "azurerm_key_vault_secret" "mysql_database_name" {
   for_each = { for key, value in var.settings.mysql_databases : key => value if can(var.settings.keyvault) }
 
-  name         = format("%s-ON-%s", each.value.name, azurecaf_name.mysql_flexible_server.result)
+  name         = format("%s-ON-%s", each.value.name, azurerm_mysql_flexible_server.mysql_flexible_server.name)
   value        = each.value.name
   key_vault_id = var.remote_objects.keyvault_id
 }
-*/
+

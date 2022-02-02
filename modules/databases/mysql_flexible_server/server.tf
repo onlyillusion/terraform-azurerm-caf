@@ -1,15 +1,7 @@
-resource "azurecaf_name" "mysql_flexible_server" {
-  name          = var.settings.name
-  resource_type = "azurerm_mysql_flexible_server"
-  prefixes      = var.global_settings.prefixes
-  random_length = var.global_settings.random_length
-  clean_input   = true
-  passthrough   = var.global_settings.passthrough
-  use_slug      = var.global_settings.use_slug
-}
+
 
 resource "azurerm_mysql_flexible_server" "mysql" {
-  name                = azurecaf_name.mysql_flexible_server.result
+  name                = var.settings.name
   resource_group_name = var.resource_group.name
   location            = var.resource_group.location
   version             = try(var.settings.version, null)
@@ -62,7 +54,7 @@ resource "azurerm_mysql_flexible_server" "mysql" {
 resource "azurerm_key_vault_secret" "mysql_administrator_username" {
   count = lookup(var.settings, "keyvault", null) == null ? 0 : 1
 
-  name         = format("%s-username", azurecaf_name.mysql_flexible_server.result)
+  name         = format("%s-username", azurerm_mysql_flexible_server.mysql.name)
   value        = try(var.settings.administrator_username, "psqladmin")
   key_vault_id = var.remote_objects.keyvault_id
 
@@ -103,7 +95,7 @@ resource "azurerm_key_vault_secret" "mysql_administrator_password" {
 resource "azurerm_key_vault_secret" "mysql_fqdn" {
   count = lookup(var.settings, "keyvault", null) == null ? 0 : 1
 
-  name         = format("%s-fqdn", azurecaf_name.mysql_flexible_server.result)
+  name         = format("%s-fqdn", azurerm_mysql_flexible_server.mysql.name)
   value        = azurerm_mysql_flexible_server.mysql.fqdn
   key_vault_id = var.remote_objects.keyvault_id
 }

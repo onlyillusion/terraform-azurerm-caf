@@ -88,7 +88,7 @@ resource "random_password" "mysql_administrator_password" {
 resource "azurerm_key_vault_secret" "mysql_administrator_password" {
   count = lookup(var.settings, "keyvault", null) == null ? 0 : 1
 
-  name         = format("%s-password", azurecaf_name.postgresql_flexible_server.result)
+  name         = format("%s-password", azurecaf_name.mysql_flexible_server.result)
   value        = try(var.settings.administrator_password, random_password.mysql_administrator_password.0.result)
   key_vault_id = var.remote_objects.keyvault_id
 

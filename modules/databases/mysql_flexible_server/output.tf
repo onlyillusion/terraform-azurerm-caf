@@ -49,12 +49,12 @@ output "mysql_flexible_server_database_id" {
   }
 }
 
-#output "mysql_flexible_server_firewall_rule_id" {
-#  description = "ID of the MYSQL flexible server firewall rule"
-#  value = {
-#    for k, v in azurerm_mysql_flexible_server_firewall_rule.mysql : k => v.id
-#  }
-#}
+output "mysql_flexible_server_firewall_rule_id" {
+  description = "ID of the MYSQL flexible server firewall rule"
+  value = {
+    for k, v in azurerm_mysql_flexible_server_firewall_rule.mysql : k => v.id
+  }
+}
 
 output "resource_group_name" {
   description = "Name of the Resource Group where the resource exists."

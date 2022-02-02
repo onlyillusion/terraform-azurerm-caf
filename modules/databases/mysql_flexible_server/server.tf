@@ -8,7 +8,7 @@ resource "azurecaf_name" "mysql_flexible_server" {
   use_slug      = var.global_settings.use_slug
 }
 
-resource "azurerm_mysql_flexible_server" "postgresql" {
+resource "azurerm_mysql_flexible_server" "mysql" {
   name                = azurecaf_name.mysql_flexible_server.result
   resource_group_name = var.resource_group.name
   location            = var.resource_group.location

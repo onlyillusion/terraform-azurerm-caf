@@ -1,5 +1,5 @@
 
-
+/*
 
 resource "azurerm_mysql_flexible_server_database" "mysql" {
   depends_on = [azurerm_mysql_flexible_server.mysql]
@@ -18,4 +18,4 @@ resource "azurerm_key_vault_secret" "mysql_database_name" {
   value        = each.value.name
   key_vault_id = var.remote_objects.keyvault_id
 }
-
+*/

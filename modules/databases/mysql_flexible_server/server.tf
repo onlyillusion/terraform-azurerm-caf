@@ -1,7 +1,6 @@
 
 
 resource "azurerm_mysql_flexible_server" "mysql" {
- 
   
   name                = var.settings.name
   resource_group_name = var.resource_group.name

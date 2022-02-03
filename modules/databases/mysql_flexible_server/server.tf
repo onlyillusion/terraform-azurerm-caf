@@ -39,6 +39,16 @@ resource "azurerm_mysql_flexible_server" "mysql" {
       standby_availability_zone = var.settings.zone == null ? null : var.settings.high_availability.standby_availability_zone
     }
   }
+  
+  dynamic "storage" {
+    for_each = try(var.settings.storage, null) == null ? [] : [var.settings.storage]
+
+    content {
+      auto_grow_enabled   = try(var.settings.storage.auto_grow_enabled, "True")
+      iops                = try(var.settings.storage.iops, "360")
+      size_gb             = try(var.settings.storage.size_gb, "20")
+    }
+  }
 
   lifecycle {
     ignore_changes = [

@@ -27,3 +27,4 @@ variable "settings" {
   description = "(Required) Used to handle passthrough parameters."
   default     = {}
 }
+variable "keyvault_id" {}

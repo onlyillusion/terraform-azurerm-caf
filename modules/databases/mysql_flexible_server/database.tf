@@ -11,7 +11,7 @@ resource "azurerm_mysql_flexible_database" "mysql" {
   charset     = try(each.value.charset, "utf8")
   resource_group_name = var.resource_group.name
 }
-/*
+
 resource "azurerm_key_vault_secret" "mysql_database_name" {
   for_each = { for key, value in var.settings.mysql_databases : key => value if can(var.settings.keyvault) }
 
@@ -19,4 +19,4 @@ resource "azurerm_key_vault_secret" "mysql_database_name" {
   value        = each.value.name
   key_vault_id = var.remote_objects.keyvault_id
 }
-*/
+

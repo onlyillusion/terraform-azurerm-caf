@@ -7,7 +7,7 @@ resource "azurerm_mysql_flexible_database" "mysql" {
 
   name        = each.value.name
   server_name = azurerm_mysql_flexible_server.mysql.name
-  collation   = try(each.value.collation, "en_US.utf8")
+  collation   = try(each.value.collation, "utf8_unicode_ci")
   charset     = try(each.value.charset, "utf8")
   resource_group_name = var.resource_group.name
 }

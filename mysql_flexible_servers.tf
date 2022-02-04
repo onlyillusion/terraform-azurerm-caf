@@ -5,7 +5,7 @@ output "mysql_flexible_servers" {
 
 module "mysql_flexible_servers" {
   source     = "./modules/databases/mysql_flexible_servers"
-  depends_on = [module.keyvaults]
+  depends_on = [module.keyvaults,module.networking]
   for_each   = local.database.mysql_flexible_servers
 
   global_settings     = local.global_settings

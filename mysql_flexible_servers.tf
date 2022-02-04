@@ -30,12 +30,11 @@ module "mysql_flexible_server" {
       null
     )
     
-   keyvault_id = coalesce(
-    try(each.value.administrator_password, null),
-    try(module.keyvaults[each.value.keyvault_key].id, null),
-    try(local.combined_objects_keyvaults[each.value.keyvault.lz_key][each.value.keyvault.key].id, null),
-    try(local.combined_objects_keyvaults[local.client_config.landingzone_key][each.value.keyvault.key].id, null)
-  )
+   keyvault_id = try(
+      local.combined_objects_keyvaults[each.value.keyvault.lz_key][each.value.keyvault.key].id,
+      local.combined_objects_keyvaults[local.client_config.landingzone_key][each.value.keyvault.key].id,
+      null
+    )
    
 
     diagnostics = local.combined_diagnostics

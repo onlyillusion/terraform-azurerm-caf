@@ -2,7 +2,7 @@ resource "azurerm_mysql_flexible_server" "mysql" {
   
   name                = var.settings.name
   resource_group_name = var.resource_group.name
-  location            = var.resource_group.location
+  location            = var.location
   version             = try(var.settings.version, null)
   sku_name            = try(var.settings.sku_name, null)
   zone                = try(var.settings.zone, null)

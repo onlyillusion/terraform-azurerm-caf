@@ -81,6 +81,7 @@ resource "azurerm_key_vault_secret" "mysqlflex_admin_password" {
     ]
   }
 }
+/*
 resource "azurerm_key_vault_secret" "sql_admin" {
   count = try(var.settings.administrator_password, null) == null ? 1 : 0
 
@@ -88,4 +89,4 @@ resource "azurerm_key_vault_secret" "sql_admin" {
   value        = var.settings.administrator_login
   key_vault_id = var.keyvault_id
 }
-
+*/

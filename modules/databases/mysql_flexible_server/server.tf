@@ -1,5 +1,3 @@
-
-
 resource "azurerm_mysql_flexible_server" "mysql" {
   depends_on = [azurerm_key_vault_secret.mysql_admin_password]
   

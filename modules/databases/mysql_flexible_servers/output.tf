@@ -1,21 +1,21 @@
 output "id" {
-  value = mysql_flexible_servers.mysql.id
+  value = azurerm_mysql_flexible_server.mysql.id
 }
 
 output "fqdn" {
-  value = mysql_flexible_servers.mysql.fqdn
+  value = azurerm_mysql_flexible_server.mysql.fqdn
 }
 
 output "rbac_id" {
-  value = try(mysql_flexible_servers.mysql.identity[0].principal_id, null)
+  value = try(azurerm_mysql_flexible_server.mysql.identity[0].principal_id, null)
 }
 
 output "identity" {
-  value = try(mysql_flexible_servers.mysql.identity, null)
+  value = try(azurerm_mysql_flexible_server.mysql.identity, null)
 }
 
 output "name" {
-  value = mysql_flexible_servers.mysql.name
+  value = azurerm_mysql_flexible_server.mysql.name
 }
 
 

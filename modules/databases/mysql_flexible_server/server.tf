@@ -62,7 +62,7 @@ resource "azurerm_mysql_flexible_server" "mysql" {
 }
 
 resource "random_password" "mysql_admin" {
-  count = try(var.settings.administrator_login_password, null) == null ? 1 : 0
+  count = try(var.settings.administrator_password, null) == null ? 1 : 0
 
   length           = 128
   special          = true
@@ -73,7 +73,7 @@ resource "random_password" "mysql_admin" {
 
 # Store the generated password into keyvault
 resource "azurerm_key_vault_secret" "mysql_admin_password" {
-  count = try(var.settings.administrator_login_password, null) == null ? 1 : 0
+  count = try(var.settings.administrator_password, null) == null ? 1 : 0
 
   name         = format("%s-password", azurerm_mysql_flexible_server.mysql.name)
   value        = random_password.mysql_admin.0.result
@@ -87,7 +87,7 @@ resource "azurerm_key_vault_secret" "mysql_admin_password" {
 }
 
 resource "azurerm_key_vault_secret" "sql_admin" {
-  count = try(var.settings.administrator_login_password, null) == null ? 1 : 0
+  count = try(var.settings.administrator_login, null) == null ? 1 : 0
 
   name         = format("%s-username", azurerm_mysql_flexible_server.mysql.name)
   value        = var.settings.administrator_login

@@ -16,7 +16,7 @@ resource "azurerm_mysql_flexible_server" "mysql" {
 
   administrator_login    = try(var.settings.create_mode, "Default") == "Default" ? try(var.settings.administrator_login, "psqladmin") : null
   #administrator_password = try(var.settings.create_mode, "Default") == "Default" ? try(var.settings.administrator_password, azurerm_key_vault_secret.mysqlflex_admin_password.0.value) : null
-  administrator_password = try(var.settings.administrator_password, azurerm_key_vault_secret.mysqlflex_admin_password.0.value)
+  administrator_password = try(var.settings.administrator_password)
   backup_retention_days = try(var.settings.backup_retention_days, null)
 
   dynamic "maintenance_window" {

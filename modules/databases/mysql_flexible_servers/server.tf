@@ -71,7 +71,7 @@ resource "random_password" "mysql_admin" {
 resource "azurerm_key_vault_secret" "mysql_admin_password" {
   count = try(var.settings.administrator_login_password, null) == null ? 1 : 0
 
-  name         = format("%s-password", azurecaf_name.mysql.result)
+  name         = format("%s-password", azurerm_mysql_flexible_server.mysql.name)
   value        = random_password.mysql_admin.0.result
   key_vault_id = var.keyvault_id
 

@@ -15,8 +15,8 @@ resource "azurerm_mysql_flexible_server" "mysql" {
   source_server_id                  = try(var.settings.create_mode, "PointInTimeRestore") == "PointInTimeRestore" ? try(var.settings.source_server_id, null) : null
 
   administrator_login    = try(var.settings.create_mode, "Default") == "Default" ? try(var.settings.administrator_login, "psqladmin") : null
-  #administrator_password = try(var.settings.create_mode, "Default") == "Default" ? try(var.settings.administrator_password, azurerm_key_vault_secret.mysqlflex_admin_password.0.value) : null
-  administrator_password = try(var.settings.administrator_password)
+  administrator_password = try(var.settings.create_mode, "Default") == "Default" ? try(var.settings.administrator_password, azurerm_key_vault_secret.mysqlflex_admin_password.0.value) : null
+  #administrator_password = try(var.settings.administrator_password)
   backup_retention_days = try(var.settings.backup_retention_days, null)
 
   dynamic "maintenance_window" {
@@ -71,7 +71,7 @@ resource "random_password" "mysqlflex_admin" {
 resource "azurerm_key_vault_secret" "mysqlflex_admin_password" {
   count = try(var.settings.administrator_password, null) == null ? 1 : 0
 
-  name         = format("%s-password", azurerm_mysql_flexible_server.mysql.name)
+  name         = format("%s-password", "MYSQLFLEX")
   value        = random_password.mysqlflex_admin.0.result
   key_vault_id = var.keyvault_id
 
@@ -84,7 +84,7 @@ resource "azurerm_key_vault_secret" "mysqlflex_admin_password" {
 resource "azurerm_key_vault_secret" "sql_admin" {
   count = try(var.settings.administrator_password, null) == null ? 1 : 0
 
-  name         = format("%s-username", azurerm_mysql_flexible_server.mysql.name )
+  name         = format("%s-username", "MYSQLFLEX" )
   value        = var.settings.administrator_login
   key_vault_id = var.keyvault_id
 }

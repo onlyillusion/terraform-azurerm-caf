@@ -14,7 +14,7 @@ module "mysql_flexible_servers" {
   resource_group_name = local.resource_groups[each.value.resource_group_key].name
   location            = lookup(each.value, "region", null) == null ? local.resource_groups[each.value.resource_group_key].location : local.global_settings.regions[each.value.region]
   keyvault_id = coalesce(
-    try(each.value.administrator_login_password, null),
+    try(each.value.administrator_password, null),
     try(module.keyvaults[each.value.keyvault_key].id, null),
     try(local.combined_objects_keyvaults[each.value.keyvault.lz_key][each.value.keyvault.key].id, null),
     try(local.combined_objects_keyvaults[local.client_config.landingzone_key][each.value.keyvault.key].id, null)

@@ -15,7 +15,7 @@ resource "azurerm_mysql_flexible_server" "mysql" {
   source_server_id                  = try(var.settings.create_mode, "PointInTimeRestore") == "PointInTimeRestore" ? try(var.settings.source_server_id, null) : null
 
   administrator_login    = try(var.settings.create_mode, "Default") == "Default" ? try(var.settings.administrator_username, "psqladmin") : null
-  administrator_password = try(var.settings.administrator_password, azurerm_key_vault_secret.mysql_admin_password.0.value)
+  administrator_login_password = try(var.settings.administrator_login_password, azurerm_key_vault_secret.mysqlflex_admin_password.0.value)
 
   backup_retention_days = try(var.settings.backup_retention_days, null)
 
@@ -58,8 +58,8 @@ resource "azurerm_mysql_flexible_server" "mysql" {
   tags = merge(local.tags, lookup(var.settings, "tags", {}))
 }
 # Generate sql server random admin password if not provided in the attribute administrator_login_password
-resource "random_password" "mysql_admin" {
-  count = try(var.settings.administrator_password, null) == null ? 1 : 0
+resource "random_password" "mysqlflex_admin" {
+  count = try(var.settings.administrator_login_password, null) == null ? 1 : 0
 
   length           = 32
   special          = true
@@ -68,11 +68,11 @@ resource "random_password" "mysql_admin" {
 }
 
 # Store the generated password into keyvault
-resource "azurerm_key_vault_secret" "mysql_admin_password" {
-  count = try(var.settings.administrator_password, null) == null ? 1 : 0
+resource "azurerm_key_vault_secret" "mysqlflex_admin_password" {
+  count = try(var.settings.administrator_login_password, null) == null ? 1 : 0
 
   name         = format("%s-password", azurerm_mysql_flexible_server.mysql.name)
-  value        = random_password.mysql_admin.0.result
+  value        = random_password.mysqlflex_admin.0.result
   key_vault_id = var.keyvault_id
 
   lifecycle {

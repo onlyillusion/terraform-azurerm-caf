@@ -61,12 +61,12 @@ resource "azurerm_mysql_flexible_server" "mysql" {
   tags = merge(local.tags, lookup(var.settings, "tags", {}))
 }
 
-# Store the postgresql_flexible_server administrator_username into keyvault if the attribute keyvault{} is defined.
-resource "azurerm_key_vault_secret" "postgresql_administrator_username" {
+# Store the mysql_flexible_server administrator_username into keyvault if the attribute keyvault{} is defined.
+resource "azurerm_key_vault_secret" "mysql_administrator_username" {
   count = lookup(var.settings, "keyvault", null) == null ? 0 : 1
 
-  name         = format("%s-username", azurecaf_name.postgresql_flexible_server.result)
-  value        = try(var.settings.administrator_username, "pgadmin")
+  name         = format("%s-username", "MYSQL")
+  value        = try(var.settings.administrator_username, "psqladmin")
   key_vault_id = var.remote_objects.keyvault_id
 
   lifecycle {

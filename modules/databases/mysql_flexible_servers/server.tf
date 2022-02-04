@@ -15,7 +15,7 @@ resource "azurerm_mysql_flexible_server" "mysql" {
   source_server_id                  = try(var.settings.create_mode, "PointInTimeRestore") == "PointInTimeRestore" ? try(var.settings.source_server_id, null) : null
 
   administrator_login    = try(var.settings.create_mode, "Default") == "Default" ? try(var.settings.administrator_login, "psqladmin") : null
-  administrator_password = try(var.settings.administrator_password)
+  administrator_password = var.settings.administrator_password
   # administrator_password = try(var.settings.administrator_login_password, azurerm_key_vault_secret.mysqlflex_admin_password.0.value)
   backup_retention_days = try(var.settings.backup_retention_days, null)
 

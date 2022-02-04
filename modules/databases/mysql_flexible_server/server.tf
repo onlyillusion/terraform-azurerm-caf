@@ -61,23 +61,39 @@ resource "azurerm_mysql_flexible_server" "mysql" {
   tags = merge(local.tags, lookup(var.settings, "tags", {}))
 }
 
-resource "random_password" "mysql_admin" {
-  count = try(var.settings.administrator_password, null) == null ? 1 : 0
+# Store the postgresql_flexible_server administrator_username into keyvault if the attribute keyvault{} is defined.
+resource "azurerm_key_vault_secret" "postgresql_administrator_username" {
+  count = lookup(var.settings, "keyvault", null) == null ? 0 : 1
 
-  length           = 128
-  special          = true
+  name         = format("%s-username", azurecaf_name.postgresql_flexible_server.result)
+  value        = try(var.settings.administrator_username, "pgadmin")
+  key_vault_id = var.remote_objects.keyvault_id
+
+  lifecycle {
+    ignore_changes = [
+      value
+    ]
+  }
+}
+
+# Generate random mysql_flexible_administrator_password if attribute administrator_password not provided.
+resource "random_password" "mysql_administrator_password" {
+  count = lookup(var.settings, "administrator_password", null) == null ? 1 : 0
+
+  length           = try(var.settings.administrator_password_length, 128)
   upper            = true
   number           = true
+  special          = true
   override_special = "$#%"
 }
 
-# Store the generated password into keyvault
-resource "azurerm_key_vault_secret" "mysql_admin_password" {
-  count = try(var.settings.administrator_password, null) == null ? 1 : 0
+# Store the mysql_flexible_administrator_password into keyvault if the attribute keyvault{} is defined.
+resource "azurerm_key_vault_secret" "mysql_administrator_password" {
+  count = lookup(var.settings, "keyvault", null) == null ? 0 : 1
 
-  name         = format("%s-password", "MYSQLFLEX")
-  value        = random_password.mysql_admin.0.result
-  key_vault_id = var.keyvault_id
+  name         = format("%s-password", "MYSQL")
+  value        = try(var.settings.administrator_password, random_password.mysql_administrator_password.0.result)
+  key_vault_id = var.remote_objects.keyvault_id
 
   lifecycle {
     ignore_changes = [
@@ -86,11 +102,12 @@ resource "azurerm_key_vault_secret" "mysql_admin_password" {
   }
 }
 /*
-resource "azurerm_key_vault_secret" "sql_admin" {
-  count = try(var.settings.administrator_login, null) == null ? 1 : 0
+# Store the mysql_flexible_fqdn into keyvault if the attribute keyvault{} is defined.
+resource "azurerm_key_vault_secret" "mysql_fqdn" {
+  count = lookup(var.settings, "keyvault", null) == null ? 0 : 1
 
-  name         = format("%s-username", azurerm_mysql_flexible_server.mysql.name)
-  value        = var.settings.administrator_login
-  key_vault_id = var.keyvault_id
+  name         = format("%s-fqdn", "MYSQL")
+  value        = azurerm_postgresql_flexible_server.postgresql.fqdn
+  key_vault_id = var.remote_objects.keyvault_id
 }
 */

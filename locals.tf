@@ -119,7 +119,7 @@ locals {
     mysql_servers                      = try(var.database.mysql_servers, {})
     postgresql_servers                 = try(var.database.postgresql_servers, {})
     synapse_workspaces                 = try(var.database.synapse_workspaces, {})
-    mysql_flexible_server              = try(var.database.mysql_flexible_server, {})
+    mysql_flexible_servers              = try(var.database.mysql_flexible_servers, {})
   }
 
   data_factory = {

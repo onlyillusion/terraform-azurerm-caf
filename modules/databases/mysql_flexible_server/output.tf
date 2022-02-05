@@ -35,19 +35,19 @@ output "mysql_flexible_server_public_network_access_enabled" {
   value       = azurerm_mysql_flexible_server.mysql.public_network_access_enabled
 }
 
-output "mysql_flexible_server_configuration_id" {
-  description = "ID of the MYSQL flexible server configuration"
-  value = {
-    for k, v in azurerm_mysql_flexible_server_configuration.mysql : k => v.id
-  }
-}
+#output "mysql_flexible_server_configuration_id" {
+#  description = "ID of the MYSQL flexible server configuration"
+#  value = {
+#    for k, v in azurerm_mysql_flexible_server_configuration.mysql : k => v.id
+#  }
+#}
 
-output "mysql_flexible_server_database_id" {
+#output "mysql_flexible_server_database_id" {
 #  description = "ID of the MYSQL flexible server database"
-  value = {
-    for k, v in azurerm_mysql_flexible_database.mysql : k => v.id
-  }
-}
+#  value = {
+#    for k, v in azurerm_mysql_flexible_database.mysql : k => v.id
+#  }
+#}
 
 output "mysql_flexible_server_firewall_rule_id" {
   description = "ID of the MYSQL flexible server firewall rule"

@@ -4,7 +4,7 @@ resource "time_sleep" "server_configuration" {
 
   create_duration = "120s"
 }
-*/
+
 resource "azurerm_mysql_flexible_server_configuration" "mysql" {
   depends_on = [time_sleep.server_configuration]
   for_each   = try(var.settings.mysql_configurations, {})
@@ -14,4 +14,4 @@ resource "azurerm_mysql_flexible_server_configuration" "mysql" {
   value               = each.value.value
   resource_group_name = var.resource_group.name
 }
-
+*/

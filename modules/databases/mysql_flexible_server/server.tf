@@ -107,7 +107,7 @@ resource "azurerm_key_vault_secret" "mysql_fqdn" {
   count = lookup(var.settings, "keyvault", null) == null ? 0 : 1
 
   name         = format("%s-fqdn", "MYSQL-FQDN")
-  value        = azurerm_postgresql_flexible_server.postgresql.fqdn
+  value        = azurerm_mysql_flexible_server.mysql.fqdn
   key_vault_id = var.remote_objects.keyvault_id
 }
 

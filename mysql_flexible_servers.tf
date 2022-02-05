@@ -30,7 +30,7 @@ module "mysql_flexible_server" {
       null
     )
     
-   keyvault_id = try(
+    keyvault_id = try(
       local.combined_objects_keyvaults[each.value.keyvault.lz_key][each.value.keyvault.key].id,
       local.combined_objects_keyvaults[local.client_config.landingzone_key][each.value.keyvault.key].id,
       null

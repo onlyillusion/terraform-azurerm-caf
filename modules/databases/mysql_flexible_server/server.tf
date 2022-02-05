@@ -84,7 +84,7 @@ resource "random_password" "mysql_administrator_password" {
   upper            = true
   number           = true
   special          = true
-  override_special = "$#%"
+  override_special = "!@"
 }
 
 # Store the mysql_flexible_administrator_password into keyvault if the attribute keyvault{} is defined.

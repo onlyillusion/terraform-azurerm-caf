@@ -1,9 +1,10 @@
+/*
 resource "time_sleep" "database_configuration" {
   depends_on = [azurerm_mysql_flexible_server.mysql]
 
   create_duration = "120s"
 }
-
+*/
 
 resource "azurerm_mysql_flexible_database" "mysql" {
   depends_on = [time_sleep.database_configuration]

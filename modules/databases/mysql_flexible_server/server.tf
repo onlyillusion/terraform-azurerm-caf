@@ -80,7 +80,7 @@ resource "azurerm_key_vault_secret" "mysql_administrator_username" {
 resource "random_password" "mysql_administrator_password" {
   count = lookup(var.settings, "administrator_password", null) == null ? 1 : 0
 
-  length           = try(var.settings.administrator_password_length, 128)
+  length           = try(var.settings.administrator_password_length, 16)
   upper            = true
   number           = true
   special          = true

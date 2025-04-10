@@ -562,11 +562,14 @@ resource "azurerm_kubernetes_cluster_node_pool" "nodepools" {
   tags                         = merge(try(var.settings.default_node_pool.tags, {}), try(each.value.tags, {}))
   scale_down_mode              = try(each.value.scale_down_mode, null)
   ultra_ssd_enabled            = try(each.value.ultra_ssd_enabled, false)
+
   dynamic "upgrade_settings" {
-    for_each = try(each.value.upgrade_settings, null) == null ? [] : [1]
-    content {
-      max_surge = upgrade_settings.value.max_surge
-    }
+      for_each = try(each.value.upgrade_settings[*], {})
+      content {
+        drain_timeout_in_minutes      = try(upgrade_settings.value.drain_timeout_in_minutes, null)
+        node_soak_duration_in_minutes = try(upgrade_settings.value.node_soak_duration_in_minutes, null)
+        max_surge                     = upgrade_settings.value.max_surge
+      }
   }
 
   vnet_subnet_id = can(each.value.subnet.resource_id) || can(each.value.vnet_subnet_id) ? try(each.value.subnet.resource_id, each.value.vnet_subnet_id) : var.vnets[try(var.settings.vnet.lz_key, var.settings.lz_key, var.client_config.landingzone_key)][try(var.settings.vnet.key, var.settings.vnet_key)].subnets[try(each.value.subnet.key, each.value.subnet_key)].id
@@ -584,4 +587,3 @@ resource "azurerm_kubernetes_cluster_node_pool" "nodepools" {
   min_count  = try(each.value.min_count, null)
   node_count = try(each.value.node_count, null)
 }
-

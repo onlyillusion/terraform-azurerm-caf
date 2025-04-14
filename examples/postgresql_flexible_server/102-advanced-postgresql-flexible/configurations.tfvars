@@ -43,6 +43,7 @@ postgresql_flexible_servers = {
       # lz_key      = ""                      # Set the lz_key if the vnet is remote.
     }
 
+    #private_dns_zone_id = "/subscription/xxx/private_dns_id"
     private_dns_zone = {
       key = "dns1"
       # lz_key      = ""                      # Set the lz_key if the private_dns_zone is remote.

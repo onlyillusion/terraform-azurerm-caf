@@ -60,6 +60,12 @@ container_app_environments = {
     tags = {
       environment = "testing"
     }
+    workload_profile = {
+      name                  = "Consumption"
+      workload_profile_type = "Consumption" # Possible values include Consumption, D4, D8, D16, D32, E4, E8, E16 and E32
+      maximum_count = "3"
+      minimum_count = "1"
+    }  
   }
 }
 
@@ -68,6 +74,7 @@ container_apps = {
     name                          = "nginx-app"
     container_app_environment_key = "cae1"
     resource_group_key            = "rg1"
+    workload_profile_name = "Consumption" # Name of container_app_environments workload_profile
 
     revision_mode = "Single"
     template = {

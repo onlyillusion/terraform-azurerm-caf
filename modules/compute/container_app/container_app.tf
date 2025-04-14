@@ -14,7 +14,8 @@ resource "azurerm_container_app" "ca" {
   container_app_environment_id = var.container_app_environment_id
   revision_mode                = var.settings.revision_mode
   tags                         = merge(local.tags, try(var.settings.tags, null))
-
+  workload_profile_name        = try(var.settings.workload_profile_name, null)
+  
   template {
     dynamic "container" {
       for_each = var.settings.template.container
@@ -214,7 +215,8 @@ resource "azurerm_container_app" "ca" {
       external_enabled           = try(ingress.value.external_enabled, null)
       fqdn                       = try(ingress.value.fqdn, null)
       target_port                = ingress.value.target_port
-      transport                  = ingress.value.transport
+      transport                  = try(ingress.value.transport, null)
+      exposed_port               = try(ingress.value.exposed_port, null)
 
       dynamic "custom_domain" {
         for_each = try(ingress.value.custom_domain, {})
@@ -230,9 +232,9 @@ resource "azurerm_container_app" "ca" {
         for_each = try(ingress.value.traffic_weight, {})
 
         content {
-          label           = traffic_weight.value.label
-          latest_revision = traffic_weight.value.latest_revision
-          revision_suffix = traffic_weight.value.revision_suffix
+          label           = try(traffic_weight.value.label, null)
+          latest_revision = try(traffic_weight.value.latest_revision, null)
+          revision_suffix = try(traffic_weight.value.revision_suffix, null)
           percentage      = traffic_weight.value.percentage
         }
       }

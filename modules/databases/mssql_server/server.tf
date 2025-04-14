@@ -9,6 +9,8 @@ resource "azurerm_mssql_server" "mssql" {
   connection_policy             = try(var.settings.connection_policy, null)
   minimum_tls_version           = try(var.settings.minimum_tls_version, null)
   tags                          = local.tags
+  
+  transparent_data_encryption_key_vault_key_id = try(var.settings.transparent_data_encryption_key_vault_key_id, null)
 
   dynamic "azuread_administrator" {
     for_each = can(var.settings.azuread_administrator) ? [var.settings.azuread_administrator] : []

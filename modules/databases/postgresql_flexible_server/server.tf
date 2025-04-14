@@ -16,10 +16,11 @@ resource "azurerm_postgresql_flexible_server" "postgresql" {
   sku_name            = try(var.settings.sku_name, null)
   zone                = try(var.settings.zone, null)
   storage_mb          = try(var.settings.storage_mb, null)
-
+  
   delegated_subnet_id = var.remote_objects.subnet_id
   private_dns_zone_id = var.remote_objects.private_dns_zone_id
-
+  public_network_access_enabled = try(var.settings.public_network_access_enabled, true) 
+  
   create_mode                       = try(var.settings.create_mode, "Default")
   point_in_time_restore_time_in_utc = try(var.settings.create_mode, "PointInTimeRestore") == "PointInTimeRestore" ? try(var.settings.point_in_time_restore_time_in_utc, null) : null
   source_server_id                  = try(var.settings.create_mode, "PointInTimeRestore") == "PointInTimeRestore" ? try(var.settings.source_server_id, null) : null
@@ -59,7 +60,6 @@ resource "azurerm_postgresql_flexible_server" "postgresql" {
 
   lifecycle {
     ignore_changes = [
-      private_dns_zone_id,
       tags
     ]
   }

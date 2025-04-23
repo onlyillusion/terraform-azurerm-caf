@@ -25,13 +25,12 @@ resource "azurerm_app_service" "app_service" {
   https_only              = lookup(var.settings, "https_only", null)
 
   dynamic "identity" {
-    for_each = try(var.identity, null) == null ? [] : [1]
-
+    for_each = var.identity != null ? [var.identity] : []
     content {
       type         = var.identity.type
-      identity_ids = lower(var.identity.type) == "userassigned" ? local.managed_identities : null
+      identity_ids = contains([for t in split(",", lower(var.identity.type)) : trim(t, " ")], "userassigned") ? local.managed_identities : null
     }
-  }
+  } 
 
   key_vault_reference_identity_id = can(var.settings.key_vault_reference_identity.key) ? var.combined_objects.managed_identities[try(var.settings.identity.lz_key, var.client_config.landingzone_key)][var.settings.key_vault_reference_identity.key].id : try(var.settings.key_vault_reference_identity.id, null)
 
